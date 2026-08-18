@@ -1,146 +1,439 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haitian Products</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haitian Store</title>
 
-<link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-<style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-}
-header{
-    background:#ff6a00;
-    color:white;
-    padding:15px;
-    text-align:center;
-}
-.search{
-    padding:15px;
-    text-align:center;
-}
-.search input{
-    width:90%;
-    max-width:500px;
-    padding:12px;
-    border-radius:25px;
-    border:1px solid #ccc;
-}
-.products{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:15px;
-    padding:15px;
-}
-.card{
-    background:white;
-    border-radius:10px;
-    overflow:hidden;
-    box-shadow:0 2px 8px rgba(0,0,0,.2);
-}
-.card img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-}
-.card h3{
-    padding:10px;
-    margin:0;
-}
-.price{
-    color:#ff6a00;
-    font-weight:bold;
-    padding:0 10px;
-}
-.btn{
-    display:block;
-    background:#25D366;
-    color:white;
-    text-align:center;
-    text-decoration:none;
-    padding:12px;
-    margin:10px;
-    border-radius:8px;
-    .card img {
-    width: 100%;
-    height: 220px;
-    object-fit: contain;
-    border-radius: 10px;
-}
-}
-</style>
+    body {
+      background: #f5f5f5;
+      color: #222;
+    }
 
+    header {
+      background: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin-bottom: 15px;
+    }
+
+    nav button {
+      background: white;
+      color: #111;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    nav button:hover {
+      background: #ddd;
+    }
+
+    .cart-button {
+      background: #e91e63;
+      color: white;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .product {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .product img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #eee;
+    }
+
+    .product h3 {
+      margin: 12px 0 8px;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .product button {
+      background: #111;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .product button:hover {
+      background: #333;
+    }
+
+    #cart {
+      display: none;
+      background: white;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    #cart h2 {
+      margin-bottom: 15px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .checkout {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: #25D366;
+      color: white;
+      text-align: center;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .close-cart {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-<h1>Haitian Products</h1>
+  <h1>Haitian Store</h1>
+
+  <nav>
+    <button onclick="showCategory('men')">Men</button>
+    <button onclick="showCategory('women')">Women</button>
+    <button class="cart-button" onclick="showCart()">
+      🛒 Panier (<span id="cartCount">0</span>)
+    </button>
+  </nav>
 </header>
 
-<div class="search">
-<input type="text" placeholder="Rechercher un produit...">
-</div>
+<main>
+  <section id="products" class="products"></section>
 
-<div class="products">
+  <section id="cart">
+    <h2>🛒 Mon panier</h2>
 
-<div class="card">
-<img src="IMG_6796.jpeg" alt="Aventus Blue For Him">
+    <div id="cartItems"></div>
 
-<h3>Aventus Blue For Him</h3>
+    <h3 style="margin-top:20px;">
+      Total : <span id="cartTotal">0</span> HTG
+    </h3>
 
-<p class="price">10$</p>
+    <button class="checkout" onclick="orderWhatsApp()">
+      Commander sur WhatsApp
+    </button>
 
-<a class="btn" href="https://wa.me/50932429034?text=Bonjour,%20je%20veux%20commander%20le%20parfum%20Aventus%20Blue%20For%20Him">
-Commander sur WhatsApp
-</a>
+    <button class="close-cart" onclick="closeCart()">
+      Continuer mes achats
+    </button>
+  </section>
+</main>
 
-</div>
+<script>
 
-<div class="card">
-<h3>Prochain produit</h3>
-<p class="price">Bientôt</p>
-</div>
+  /* =========================
+     PRODUITS
+     ========================= */
 
-<div class="card">
-<h3>Prochain produit</h3>
-<p class="price">Bientôt</p>
-</div>
+  const products = [
 
-<div class="card">
-    <img src="e02c9a29-c15d-4207-8657-f429a0ef875f.jpeg" alt="The Keys BE DO HAVE">
+    {
+      id: 1,
+      name: "Parfum Homme",
+      price: 1200,
+      category: "men",
+      image: "parfum-homme.jpg"
+    },
 
-    <h3>The Keys BE DO HAVE</h3>
+    {
+      id: 2,
+      name: "Parfum Femme",
+      price: 1200,
+      category: "women",
+      image: "parfum-femme.jpg"
+    },
 
-    <p class="price">328 $</p>
+    {
+      id: 3,
+      name: "Parfum Homme Premium",
+      price: 1500,
+      category: "men",
+      image: "parfum-homme-2.jpg"
+    },
 
-    <a class="btn"
-       href="https://wa.me/50932429034?text=Bonjour,%20je%20veux%20commander%20le%20livre%20The%20Keys%20BE%20DO%20HAVE">
-        Commander sur WhatsApp
-    </a>
-</div>
-    </div>
+    {
+      id: 4,
+      name: "Parfum Femme Premium",
+      price: 1500,
+      category: "women",
+      image: "parfum-femme-2.jpg"
+    }
 
-<div class="card">
-    <img src="e02c9a29-c15d-4207-8657-f429a0ef875f.jpeg.jpeg" alt="The Execution Formula">
-    <h3>The Execution Formula</h3>
-    <p class="price">334 $</p>
+  ];
 
-    <a class="btn" href="https://wa.me/50932429034?text=Bonjour,%20je%20veux%20commander%20The%20Execution%20Formula">
-        Commander sur WhatsApp
-    </a>
-</div>
 
-</div>
-</div>
+  let cart = [];
 
-</div>
+
+  /* =========================
+     AFFICHER LES PRODUITS
+     ========================= */
+
+  function showCategory(category) {
+
+    document.getElementById("cart").style.display = "none";
+
+    const container = document.getElementById("products");
+
+    container.innerHTML = "";
+
+    const filteredProducts = products.filter(
+      product => product.category === category
+    );
+
+    filteredProducts.forEach(product => {
+
+      container.innerHTML += `
+
+        <div class="product">
+
+          <img src="${product.image}" alt="${product.name}">
+
+          <h3>${product.name}</h3>
+
+          <div class="price">
+            ${product.price} HTG
+          </div>
+
+          <button onclick="addToCart(${product.id})">
+            Ajouter au panier
+          </button>
+
+        </div>
+
+      `;
+
+    });
+
+  }
+
+
+  /* =========================
+     PANIER
+     ========================= */
+
+  function addToCart(id) {
+
+    const product = products.find(
+      product => product.id === id
+    );
+
+    cart.push(product);
+
+    updateCart();
+
+    alert(product.name + " ajouté au panier !");
+
+  }
+
+
+  function updateCart() {
+
+    document.getElementById("cartCount").textContent =
+      cart.length;
+
+    const cartItems =
+      document.getElementById("cartItems");
+
+    cartItems.innerHTML = "";
+
+    let total = 0;
+
+    cart.forEach((product, index) => {
+
+      total += product.price;
+
+      cartItems.innerHTML += `
+
+        <div class="cart-item">
+
+          <span>
+            ${product.name}
+          </span>
+
+          <span>
+            ${product.price} HTG
+
+            <button
+              onclick="removeFromCart(${index})"
+              style="margin-left:8px;"
+            >
+              ❌
+            </button>
+
+          </span>
+
+        </div>
+
+      `;
+
+    });
+
+    document.getElementById("cartTotal").textContent =
+      total;
+
+  }
+
+
+  function removeFromCart(index) {
+
+    cart.splice(index, 1);
+
+    updateCart();
+
+  }
+
+
+  function showCart() {
+
+    document.getElementById("products").style.display =
+      "none";
+
+    document.getElementById("cart").style.display =
+      "block";
+
+    updateCart();
+
+  }
+
+
+  function closeCart() {
+
+    document.getElementById("cart").style.display =
+      "none";
+
+    document.getElementById("products").style.display =
+      "grid";
+
+  }
+
+
+  /* =========================
+     WHATSAPP
+     ========================= */
+
+  function orderWhatsApp() {
+
+    if (cart.length === 0) {
+
+      alert("Votre panier est vide.");
+
+      return;
+
+    }
+
+    let message =
+      "Bonjour, je souhaite commander :%0A%0A";
+
+    let total = 0;
+
+    cart.forEach(product => {
+
+      message +=
+        "- " +
+        product.name +
+        " : " +
+        product.price +
+        " HTG%0A";
+
+      total += product.price;
+
+    });
+
+    message +=
+      "%0ATotal : " +
+      total +
+      " HTG";
+
+    /*
+      REMPLACE 509XXXXXXXX PAR
+      TON NUMÉRO WHATSAPP
+    */
+
+    const phone =
+      "509XXXXXXXX";
+
+    window.open(
+      "https://wa.me/" +
+      phone +
+      "?text=" +
+      message,
+      "_blank"
+    );
+
+  }
+
+
+  /* =========================
+     AFFICHAGE INITIAL
+     ========================= */
+
+  showCategory("men");
+
+</script>
 
 </body>
 </html>
-<div class="card">
     

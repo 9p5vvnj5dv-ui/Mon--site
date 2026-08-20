@@ -1,436 +1,431 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haitian Store</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<title>Haitian Store</title>
 
-    body {
-      background: #f5f5f5;
-      color: #222;
-    }
+<style>
 
-    header {
-      background: #111;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    header h1 {
-      margin-bottom: 15px;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  color: #222;
+}
 
-    nav button {
-      background: white;
-      color: #111;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+/* EN-TÊTE */
 
-    nav button:hover {
-      background: #ddd;
-    }
+header {
+  background: white;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 
-    .cart-button {
-      background: #e91e63;
-      color: white;
-    }
+.logo {
+  color: #f26b21;
+  font-size: 26px;
+  font-weight: bold;
+}
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 30px;
-      max-width: 1100px;
-      margin: auto;
-    }
+/* RECHERCHE */
 
-    .product {
-      background: white;
-      border-radius: 10px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+.search {
+  margin-top: 12px;
+  display: flex;
+}
 
-    .product img {
-      width: 100%;
-      height: 220px;
-      object-fit: contain;
-      border-radius: 8px;
-      background: #eee;
-    }
+.search input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 25px 0 0 25px;
+  font-size: 15px;
+}
 
-    .product h3 {
-      margin: 12px 0 8px;
-    }
+.search button {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 0 25px 25px 0;
+}
 
-    .price {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+/* CATÉGORIES */
 
-    .product button {
-      background: #111;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
 
-    .product button:hover {
-      background: #333;
-    }
+nav button {
+  border: none;
+  padding: 10px 22px;
+  border-radius: 20px;
+  background: #eee;
+  font-weight: bold;
+}
 
-    #cart {
-      display: none;
-      background: white;
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    }
+nav button.active {
+  background: #f26b21;
+  color: white;
+}
 
-    #cart h2 {
-      margin-bottom: 15px;
-    }
+/* TITRE */
 
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #ddd;
-    }
+h2 {
+  padding: 0 15px;
+}
 
-    .checkout {
-      display: block;
-      width: 100%;
-      margin-top: 20px;
-      padding: 12px;
-      background: #25D366;
-      color: white;
-      text-align: center;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-    }
+/* PRODUITS */
 
-    .close-cart {
-      margin-top: 10px;
-      width: 100%;
-      padding: 10px;
-      background: #111;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-  </style>
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 15px;
+}
+
+/* PETIT CARRÉ DU PRODUIT */
+
+.product {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.12);
+  border: 1px solid #eee;
+}
+
+/* PHOTO */
+
+.product img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  background: white;
+  display: block;
+}
+
+/* INFORMATIONS */
+
+.info {
+  padding: 8px;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: bold;
+  min-height: 34px;
+}
+
+/* PRIX */
+
+.price {
+  color: #e45117;
+  font-size: 17px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+/* BOUTON COMMANDER */
+
+.buy {
+  width: 100%;
+  padding: 9px;
+  background: #1687e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(22,135,232,0.25);
+}
+
+.buy::before {
+  content: "✦ ";
+}
+
+.buy:hover {
+  background: #0d70c7;
+}
+
+/* GRAND ÉCRAN */
+
+@media (min-width: 700px) {
+
+  .products {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 <header>
-  <h1>Haitian Store</h1>
+
+  <div class="logo">
+    Haitian Store
+  </div>
+
+  <div class="search">
+
+    <input
+      type="text"
+      id="search"
+      placeholder="Que recherchez-vous ?"
+      oninput="afficherProduits()"
+    >
+
+    <button>
+      🔍
+    </button>
+
+  </div>
 
   <nav>
-    <button onclick="showCategory('men')">Men</button>
-    <button onclick="showCategory('women')">Women</button>
-    <button class="cart-button" onclick="showCart()">
-      🛒 Panier (<span id="cartCount">0</span>)
+
+    <button
+      class="active"
+      onclick="changerCategorie('all', this)">
+      Tous
     </button>
+
+    <button
+      onclick="changerCategorie('men', this)">
+      Men
+    </button>
+
+    <button
+      onclick="changerCategorie('women', this)">
+      Women
+    </button>
+
   </nav>
+
 </header>
 
-<main>
-  <section id="products" class="products"></section>
 
-  <section id="cart">
-    <h2>🛒 Mon panier</h2>
+<h2 id="titre">
+  Nos produits
+</h2>
 
-    <div id="cartItems"></div>
 
-    <h3 style="margin-top:20px;">
-      Total : <span id="cartTotal">0</span> HTG
-    </h3>
+<div
+  class="products"
+  id="products">
+</div>
 
-    <button class="checkout" onclick="orderWhatsApp()">
-      Commander sur WhatsApp
-    </button>
-
-    <button class="close-cart" onclick="closeCart()">
-      Continuer mes achats
-    </button>
-  </section>
-</main>
 
 <script>
 
-  /* =========================
-     PRODUITS
-     ========================= */
+/* PRODUITS */
 
-  const products = [
+const produits = [
 
-    {
-      id: 1,
-      name: "Parfum Homme",
-      price: 1200,
-      category: "men",
-      image: "parfum-homme.jpg"
-    },
+  {
+    nom: "Aventus Blue for Him",
+    prix: 1000,
+    categorie: "men",
+    image: "aventus-bleu.jpg"
+  },
 
-    {
-      id: 2,
-      name: "Parfum Femme",
-      price: 1200,
-      category: "women",
-      image: "parfum-femme.jpg"
-    },
+  {
+    nom: "Spray AXE Black Night",
+    prix: 500,
+    categorie: "men",
+    image: "spray-axe.jpg"
+  },
 
-    {
-      id: 3,
-      name: "Aventus blue for him",
-      price: 10$,
-      category: "men",
-      image: "IMG_6797.jpeg"
-    },
+  {
+    nom: "Montre Classique Homme",
+    prix: 2500,
+    categorie: "men",
+    image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=700&q=80"
+  },
 
-    {
-      id: 4,
-      name: "Parfum Femme Premium",
-      price: 1500,
-      category: "women",
-      image: "parfum-femme-2.jpg"
-    }
+  {
+    nom: "Lunettes de soleil Homme",
+    prix: 900,
+    categorie: "men",
+    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=700&q=80"
+  },
 
-  ];
+  {
+    nom: "Sac à main Femme",
+    prix: 2200,
+    categorie: "women",
+    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=700&q=80"
+  },
+
+  {
+    nom: "Sac Femme Élégant",
+    prix: 2800,
+    categorie: "women",
+    image: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=700&q=80"
+  }
+
+];
 
 
-  let cart = [];
+let categorieActuelle = "all";
 
 
-  /* =========================
-     AFFICHER LES PRODUITS
-     ========================= */
+/* CHANGER DE CATÉGORIE */
 
-  function showCategory(category) {
+function changerCategorie(categorie, bouton) {
 
-    document.getElementById("cart").style.display = "none";
+  categorieActuelle = categorie;
 
-    const container = document.getElementById("products");
+  document
+    .querySelectorAll("nav button")
+    .forEach(function(b) {
+      b.classList.remove("active");
+    });
 
-    container.innerHTML = "";
+  bouton.classList.add("active");
 
-    const filteredProducts = products.filter(
-      product => product.category === category
-    );
 
-    filteredProducts.forEach(product => {
+  if (categorie === "men") {
 
-      container.innerHTML += `
+    document.getElementById("titre").textContent =
+      "Produits Men";
+
+  }
+
+  else if (categorie === "women") {
+
+    document.getElementById("titre").textContent =
+      "Produits Women";
+
+  }
+
+  else {
+
+    document.getElementById("titre").textContent =
+      "Nos produits";
+
+  }
+
+
+  afficherProduits();
+
+}
+
+
+/* AFFICHER LES PRODUITS */
+
+function afficherProduits() {
+
+  const recherche =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase();
+
+
+  const resultat = produits.filter(function(produit) {
+
+    const bonneCategorie =
+      categorieActuelle === "all" ||
+      produit.categorie === categorieActuelle;
+
+
+    const bonneRecherche =
+      produit.nom
+        .toLowerCase()
+        .includes(recherche);
+
+
+    return bonneCategorie && bonneRecherche;
+
+  });
+
+
+  document.getElementById("products").innerHTML =
+
+    resultat.map(function(produit) {
+
+      return `
 
         <div class="product">
 
-          <img src="${product.image}" alt="${product.name}">
+          <img
+            src="${produit.image}"
+            alt="${produit.nom}"
+          >
 
-          <h3>${product.name}</h3>
+          <div class="info">
 
-          <div class="price">
-            ${product.price} HTG
-          </div>
+            <div class="name">
+              ${produit.nom}
+            </div>
 
-          <button onclick="addToCart(${product.id})">
-            Ajouter au panier
-          </button>
-
-        </div>
-
-      `;
-
-    });
-
-  }
-
-
-  /* =========================
-     PANIER
-     ========================= */
-
-  function addToCart(id) {
-
-    const product = products.find(
-      product => product.id === id
-    );
-
-    cart.push(product);
-
-    updateCart();
-
-    alert(product.name + " ajouté au panier !");
-
-  }
-
-
-  function updateCart() {
-
-    document.getElementById("cartCount").textContent =
-      cart.length;
-
-    const cartItems =
-      document.getElementById("cartItems");
-
-    cartItems.innerHTML = "";
-
-    let total = 0;
-
-    cart.forEach((product, index) => {
-
-      total += product.price;
-
-      cartItems.innerHTML += `
-
-        <div class="cart-item">
-
-          <span>
-            ${product.name}
-          </span>
-
-          <span>
-            ${product.price} HTG
+            <div class="price">
+              ${produit.prix.toLocaleString("fr-FR")} G
+            </div>
 
             <button
-              onclick="removeFromCart(${index})"
-              style="margin-left:8px;"
-            >
-              ❌
+              class="buy"
+              onclick="commander('${produit.nom}', ${produit.prix})">
+
+              Commander
+
             </button>
 
-          </span>
+          </div>
 
         </div>
 
       `;
 
-    });
+    }).join("");
 
-    document.getElementById("cartTotal").textContent =
-      total;
-
-  }
+}
 
 
-  function removeFromCart(index) {
+/* COMMANDER SUR WHATSAPP */
 
-    cart.splice(index, 1);
+function commander(nom, prix) {
 
-    updateCart();
-
-  }
-
-
-  function showCart() {
-
-    document.getElementById("products").style.display =
-      "none";
-
-    document.getElementById("cart").style.display =
-      "block";
-
-    updateCart();
-
-  }
+  const message =
+    "Bonjour Haitian Store, je voudrais commander " +
+    nom +
+    " au prix de " +
+    prix +
+    " G.";
 
 
-  function closeCart() {
-
-    document.getElementById("cart").style.display =
-      "none";
-
-    document.getElementById("products").style.display =
-      "grid";
-
-  }
+  const numero =
+    "50932429034";
 
 
-  /* =========================
-     WHATSAPP
-     ========================= */
+  window.open(
 
-  function orderWhatsApp() {
+    "https://wa.me/" +
+    numero +
+    "?text=" +
+    encodeURIComponent(message),
 
-    if (cart.length === 0) {
+    "_blank"
 
-      alert("Votre panier est vide.");
+  );
 
-      return;
-
-    }
-
-    let message =
-      "Bonjour, je souhaite commander :%0A%0A";
-
-    let total = 0;
-
-    cart.forEach(product => {
-
-      message +=
-        "- " +
-        product.name +
-        " : " +
-        product.price +
-        " HTG%0A";
-
-      total += product.price;
-
-    });
-
-    message +=
-      "%0ATotal : " +
-      total +
-      " HTG";
-
-    /*
-      REMPLACE 509XXXXXXXX PAR
-      TON NUMÉRO WHATSAPP
-    */
-
-    const phone =
-      "509XXXXXXXX";
-
-    window.open(
-      "https://wa.me/" +
-      phone +
-      "?text=" +
-      message,
-      "_blank"
-    );
-
-  }
+}
 
 
-  /* =========================
-     AFFICHAGE INITIAL
-     ========================= */
+/* AFFICHAGE INITIAL */
 
-  showCategory("men");
+afficherProduits();
 
 </script>
 

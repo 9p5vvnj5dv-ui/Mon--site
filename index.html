@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Haitian Store</title>
 
 <style>
@@ -23,37 +22,72 @@ body {
 
 header {
   background: white;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px #0001;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
 }
 
 .logo {
+  font-size: 24px;
+  font-weight: 800;
   color: #f26b21;
-  font-size: 26px;
-  font-weight: bold;
+  white-space: nowrap;
 }
 
 /* RECHERCHE */
 
 .search {
-  margin-top: 12px;
+  flex: 1;
   display: flex;
+  background: #f1f1f1;
+  border-radius: 24px;
+  overflow: hidden;
 }
 
 .search input {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 25px 0 0 25px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 12px 16px;
   font-size: 15px;
+  outline: 0;
 }
 
 .search button {
+  border: 0;
   background: #222;
   color: white;
-  border: none;
-  padding: 0 20px;
-  border-radius: 0 25px 25px 0;
+  padding: 0 18px;
+  font-size: 18px;
+}
+
+/* PANIER EN HAUT */
+
+.cart {
+  border: 0;
+  background: #fff;
+  font-size: 25px;
+  cursor: pointer;
+  position: relative;
+}
+
+#count {
+  position: absolute;
+  top: -3px;
+  right: -5px;
+  background: #f26b21;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  padding: 3px 6px;
 }
 
 /* CATÉGORIES */
@@ -61,90 +95,113 @@ header {
 nav {
   display: flex;
   gap: 10px;
-  margin-top: 15px;
+  padding: 0 18px 14px;
+  overflow: auto;
 }
 
 nav button {
-  border: none;
-  padding: 10px 22px;
+  border: 0;
+  background: #fff;
+  padding: 10px 18px;
   border-radius: 20px;
-  background: #eee;
-  font-weight: bold;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-nav button.active {
+nav button.active,
+nav button:hover {
   background: #f26b21;
-  color: white;
+  color: #fff;
+}
+
+/* ACCUEIL */
+
+.hero {
+  margin: 16px;
+  background: linear-gradient(110deg,#fff1e7,#ffe0c7);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.hero h1 {
+  margin: 0 0 7px;
+  font-size: 27px;
+}
+
+.hero p {
+  margin: 0;
+  color: #666;
 }
 
 /* TITRE */
 
-h2 {
-  padding: 0 15px;
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 18px;
+}
+
+.section-title h2 {
+  margin: 12px 0;
+  font-size: 21px;
 }
 
 /* PRODUITS */
 
 .products {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2,minmax(0,1fr));
   gap: 10px;
-  padding: 15px;
+  padding: 0 14px 25px;
 }
 
-/* PETIT CARRÉ DU PRODUIT */
+/* PETITS CARRÉS */
 
-.product {
-  background: white;
+.card {
+  background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 5px #00000018;
   border: 1px solid #eee;
 }
 
-/* PHOTO */
-
-.product img {
+.card img {
   width: 100%;
   height: 140px;
   object-fit: contain;
-  background: white;
+  background: #fff;
   display: block;
 }
 
-/* INFORMATIONS */
-
 .info {
-  padding: 8px;
+  padding: 11px;
 }
 
 .name {
-  font-size: 14px;
-  font-weight: bold;
-  min-height: 34px;
+  font-weight: 700;
+  min-height: 38px;
 }
-
-/* PRIX */
 
 .price {
   color: #e45117;
-  font-size: 17px;
-  font-weight: bold;
-  margin: 5px 0;
+  font-size: 19px;
+  font-weight: 800;
+  margin: 8px 0;
 }
 
-/* BOUTON COMMANDER */
+/* BOUTON BLEU */
 
 .buy {
   width: 100%;
-  padding: 9px;
+  border: 0;
   background: #1687e8;
-  color: white;
-  border: none;
+  color: #fff;
+  padding: 9px;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(22,135,232,0.25);
+  box-shadow: 0 2px 5px rgba(22,135,232,.25);
 }
 
 .buy::before {
@@ -155,277 +212,748 @@ h2 {
   background: #0d70c7;
 }
 
+.empty {
+  padding: 30px;
+  text-align: center;
+  color: #777;
+  grid-column: 1/-1;
+}
+
+/* PANIER */
+
+.cart-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: min(390px,100%);
+  height: 100%;
+  background: #fff;
+  z-index: 20;
+  box-shadow: -4px 0 20px #0003;
+  transform: translateX(100%);
+  transition: .25s;
+  padding: 20px;
+  overflow: auto;
+}
+
+.cart-panel.open {
+  transform: translateX(0);
+}
+
+.close {
+  float: right;
+  border: 0;
+  background: #eee;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #eee;
+  padding: 14px 0;
+}
+
+.total {
+  font-size: 21px;
+  font-weight: 800;
+  margin: 20px 0;
+}
+
+.whatsapp {
+  display: block;
+  text-align: center;
+  background: #25d366;
+  color: #fff;
+  text-decoration: none;
+  padding: 13px;
+  border-radius: 9px;
+  font-weight: 800;
+}
+
+/* BOÎTE DE DISCUSSION */
+
+.chat-button {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1100;
+  border: 0;
+  border-radius: 50px;
+  background: #1687e8;
+  color: white;
+  padding: 13px 18px;
+  font-size: 15px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+
+.chat-box {
+  position: fixed;
+  right: 18px;
+  bottom: 78px;
+  width: min(340px,calc(100% - 36px));
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 5px 25px rgba(0,0,0,.25);
+  z-index: 1099;
+  overflow: hidden;
+  display: none;
+}
+
+.chat-box.ouvert {
+  display: block;
+}
+
+.chat-header {
+  background: #1687e8;
+  color: white;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.chat-close {
+  background: transparent;
+  color: white;
+  border: 0;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.chat-messages {
+  height: 220px;
+  overflow-y: auto;
+  padding: 12px;
+  background: #f5f7fa;
+}
+
+.chat-message {
+  background: white;
+  border-radius: 10px;
+  padding: 9px 11px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  gap: 7px;
+  border-top: 1px solid #eee;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+}
+
+.chat-input button {
+  border: 0;
+  background: #1687e8;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
 /* GRAND ÉCRAN */
 
-@media (min-width: 700px) {
+@media(min-width:700px) {
 
   .products {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4,1fr);
+  }
+
+  .card img {
+    height: 210px;
   }
 
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
 
-  <div class="logo">
-    Haitian Store
-  </div>
+<div class="top">
 
-  <div class="search">
+<div class="logo">
+Haitian Store
+</div>
 
-    <input
-      type="text"
-      id="search"
-      placeholder="Que recherchez-vous ?"
-      oninput="afficherProduits()"
-    >
+<div class="search">
 
-    <button>
-      🔍
-    </button>
+<input
+id="search"
+type="search"
+placeholder="Que recherchez-vous ?"
+>
 
-  </div>
+<button onclick="render()">
+⌕
+</button>
 
-  <nav>
+</div>
 
-    <button
-      class="active"
-      onclick="changerCategorie('all', this)">
-      Tous
-    </button>
+<button class="cart" onclick="toggleCart()">
+🛒
+<span id="count">0</span>
+</button>
 
-    <button
-      onclick="changerCategorie('men', this)">
-      Men
-    </button>
+</div>
 
-    <button
-      onclick="changerCategorie('women', this)">
-      Women
-    </button>
 
-  </nav>
+<nav>
+
+<button
+class="active"
+onclick="setCategory('all',this)">
+Tous
+</button>
+
+<button
+onclick="setCategory('men',this)">
+Men
+</button>
+
+<button
+onclick="setCategory('women',this)">
+Women
+</button>
+
+</nav>
 
 </header>
 
 
-<h2 id="titre">
-  Nos produits
+<section class="hero">
+
+<h1>
+Bienvenue sur Haitian Store 🇭🇹
+</h1>
+
+<p>
+Découvrez nos produits et nos meilleurs prix.
+</p>
+
+</section>
+
+
+<div class="section-title">
+
+<h2 id="title">
+Nos produits
 </h2>
+
+</div>
+
+
+<main
+class="products"
+id="products">
+</main>
+
+
+<!-- PANIER -->
+
+<aside
+class="cart-panel"
+id="cartPanel">
+
+<button
+class="close"
+onclick="toggleCart()">
+×
+</button>
+
+<h2>
+Mon panier
+</h2>
+
+<div id="cartItems">
+</div>
+
+<div
+class="total"
+id="total">
+Total : 0 G
+</div>
+
+<a
+class="whatsapp"
+id="whatsapp"
+target="_blank"
+href="#">
+Commander sur WhatsApp
+</a>
+
+</aside>
+
+
+<!-- BOÎTE DE DISCUSSION -->
+
+<div
+class="chat-box"
+id="chatBox">
+
+<div class="chat-header">
+
+<span>
+💬 Haitian Store
+</span>
+
+<button
+class="chat-close"
+onclick="fermerDiscussion()">
+×
+</button>
+
+</div>
 
 
 <div
-  class="products"
-  id="products">
+class="chat-messages"
+id="chatMessages">
+
+<div class="chat-message">
+Bonjour 👋 Comment pouvons-nous vous aider ?
 </div>
+
+</div>
+
+
+<div class="chat-input">
+
+<input
+id="chatInput"
+type="text"
+placeholder="Écrivez votre message..."
+onkeydown="if(event.key==='Enter') envoyerMessage()"
+>
+
+<button onclick="envoyerMessage()">
+➤
+</button>
+
+</div>
+
+</div>
+
+
+<button
+class="chat-button"
+onclick="ouvrirDiscussion()">
+
+💬 Discussion
+
+</button>
 
 
 <script>
 
 /* PRODUITS */
 
-const produits = [
+const products = [
 
-  {
-    nom: "Aventus Blue for Him",
-    prix: 1000,
-    categorie: "men",
-    image: "aventus-bleu.jpg"
-  },
+{
+id: 1,
+name: "Aventus Blue for Him",
+price: 1000,
+cat: "men",
+img: "aventus-bleu.jpg"
+},
 
-  {
-    nom: "Spray AXE Black Night",
-    prix: 500,
-    categorie: "men",
-    image: "spray-axe.jpg"
-  },
+{
+id: 2,
+name: "Spray AXE Black Night",
+price: 500,
+cat: "men",
+img: "spray-axe.jpg"
+},
 
-  {
-    nom: "Montre Classique Homme",
-    prix: 2500,
-    categorie: "men",
-    image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=700&q=80"
-  },
+{
+id: 3,
+name: "Montre Classique Homme",
+price: 2500,
+cat: "men",
+img: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=700&q=80"
+},
 
-  {
-    nom: "Lunettes de soleil Homme",
-    prix: 900,
-    categorie: "men",
-    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=700&q=80"
-  },
+{
+id: 4,
+name: "Sac à main Femme",
+price: 2200,
+cat: "women",
+img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=700&q=80"
+},
 
-  {
-    nom: "Sac à main Femme",
-    prix: 2200,
-    categorie: "women",
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=700&q=80"
-  },
+{
+id: 5,
+name: "Lunettes de soleil Homme",
+price: 900,
+cat: "men",
+img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=700&q=80"
+},
 
-  {
-    nom: "Sac Femme Élégant",
-    prix: 2800,
-    categorie: "women",
-    image: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=700&q=80"
-  }
+{
+id: 6,
+name: "Sac Femme Élégant",
+price: 2800,
+cat: "women",
+img: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=700&q=80"
+}
 
 ];
 
 
-let categorieActuelle = "all";
+let category = "all";
+
+let cart = [];
 
 
-/* CHANGER DE CATÉGORIE */
+/* CATÉGORIES */
 
-function changerCategorie(categorie, bouton) {
+function setCategory(cat,btn) {
 
-  categorieActuelle = categorie;
+category = cat;
 
-  document
-    .querySelectorAll("nav button")
-    .forEach(function(b) {
-      b.classList.remove("active");
-    });
+document
+.querySelectorAll("nav button")
+.forEach(function(b) {
+b.classList.remove("active");
+});
 
-  bouton.classList.add("active");
-
-
-  if (categorie === "men") {
-
-    document.getElementById("titre").textContent =
-      "Produits Men";
-
-  }
-
-  else if (categorie === "women") {
-
-    document.getElementById("titre").textContent =
-      "Produits Women";
-
-  }
-
-  else {
-
-    document.getElementById("titre").textContent =
-      "Nos produits";
-
-  }
+btn.classList.add("active");
 
 
-  afficherProduits();
+document.getElementById("title").textContent =
+cat === "all"
+? "Nos produits"
+: cat === "men"
+? "Produits Men"
+: "Produits Women";
+
+
+render();
 
 }
 
 
-/* AFFICHER LES PRODUITS */
+/* AFFICHER PRODUITS */
 
-function afficherProduits() {
+function render() {
 
-  const recherche =
-    document
-      .getElementById("search")
-      .value
-      .toLowerCase();
-
-
-  const resultat = produits.filter(function(produit) {
-
-    const bonneCategorie =
-      categorieActuelle === "all" ||
-      produit.categorie === categorieActuelle;
+const q =
+document
+.getElementById("search")
+.value
+.toLowerCase()
+.trim();
 
 
-    const bonneRecherche =
-      produit.nom
-        .toLowerCase()
-        .includes(recherche);
+const list =
+products.filter(function(p) {
+
+return
+(category === "all" || p.cat === category)
+&&
+p.name.toLowerCase().includes(q);
+
+});
 
 
-    return bonneCategorie && bonneRecherche;
+document.getElementById("products").innerHTML =
+list.length
 
-  });
+?
 
+list.map(function(p) {
 
-  document.getElementById("products").innerHTML =
+return `
 
-    resultat.map(function(produit) {
+<article class="card">
 
-      return `
+<img
+src="${p.img}"
+alt="${p.name}"
+>
 
-        <div class="product">
+<div class="info">
 
-          <img
-            src="IMG_6796.jpeg"
-            alt="Bleu for him"
-          >
+<div class="name">
+${p.name}
+</div>
 
-          <div class="info">
+<div class="price">
+${p.price.toLocaleString("fr-FR")} G
+</div>
 
-            <div class="name">
-              ${produit.nom}
-            </div>
+<button
+class="buy"
+onclick="addToCart(${p.id})">
 
-            <div class="price">
-              ${produit.prix.toLocaleString("fr-FR")} G
-            </div>
+Ajouter au panier
 
-            <button
-              class="buy"
-              onclick="commander('${produit.nom}', ${produit.prix})">
+</button>
 
-              Commander
+</div>
 
-            </button>
+</article>
 
-          </div>
+`;
 
-        </div>
+}).join("")
 
-      `;
+:
 
-    }).join("");
-
-}
-
-
-/* COMMANDER SUR WHATSAPP */
-
-function commander(nom, prix) {
-
-  const message =
-    "Bonjour Haitian Store, je voudrais commander " +
-    nom +
-    " au prix de " +
-    prix +
-    " G.";
-
-
-  const numero =
-    "50932429034";
-
-
-  window.open(
-
-    "https://wa.me/" +
-    numero +
-    "?text=" +
-    encodeURIComponent(message),
-
-    "_blank"
-
-  );
+'<div class="empty">Aucun produit trouvé.</div>';
 
 }
 
 
-/* AFFICHAGE INITIAL */
+/* AJOUTER AU PANIER */
 
-afficherProduits();
+function addToCart(id) {
+
+const product =
+products.find(function(x) {
+return x.id === id;
+});
+
+
+const item =
+cart.find(function(x) {
+return x.id === id;
+});
+
+
+if(item) {
+
+item.qty++;
+
+}
+
+else {
+
+cart.push({
+...product,
+qty: 1
+});
+
+}
+
+
+updateCart();
+
+}
+
+
+/* METTRE À JOUR PANIER */
+
+function updateCart() {
+
+document.getElementById("count").textContent =
+cart.reduce(function(s,x) {
+return s + x.qty;
+},0);
+
+
+document.getElementById("cartItems").innerHTML =
+
+cart.length
+
+?
+
+cart.map(function(x) {
+
+return `
+
+<div class="cart-item">
+
+<span>
+${x.name} × ${x.qty}
+</span>
+
+<strong>
+${(x.price*x.qty).toLocaleString("fr-FR")} G
+</strong>
+
+</div>
+
+`;
+
+}).join("")
+
+:
+
+"<p>Votre panier est vide.</p>";
+
+
+const total =
+cart.reduce(function(s,x) {
+return s + x.price*x.qty;
+},0);
+
+
+document.getElementById("total").textContent =
+"Total : " +
+total.toLocaleString("fr-FR") +
+" G";
+
+
+const message =
+cart.length
+
+?
+
+"Bonjour Haitian Store, je voudrais commander :\n" +
+cart.map(function(x) {
+return "- " + x.name +
+" x" + x.qty +
+" = " + (x.price*x.qty) +
+" G";
+}).join("\n") +
+"\nTotal : " + total + " G"
+
+:
+
+"Bonjour Haitian Store, je voudrais des informations sur vos produits.";
+
+
+document.getElementById("whatsapp").href =
+"https://wa.me/50932429034?text=" +
+encodeURIComponent(message);
+
+}
+
+
+/* OUVRIR PANIER */
+
+function toggleCart() {
+
+document
+.getElementById("cartPanel")
+.classList.toggle("open");
+
+}
+
+
+/* RECHERCHE */
+
+document
+.getElementById("search")
+.addEventListener(
+"input",
+render
+);
+
+
+/* BOÎTE DE DISCUSSION */
+
+function ouvrirDiscussion() {
+
+document
+.getElementById("chatBox")
+.classList.add("ouvert");
+
+}
+
+
+function fermerDiscussion() {
+
+document
+.getElementById("chatBox")
+.classList.remove("ouvert");
+
+}
+
+
+function envoyerMessage() {
+
+const input =
+document.getElementById("chatInput");
+
+
+const message =
+input.value.trim();
+
+
+if(!message) {
+return;
+}
+
+
+const messages =
+document.getElementById("chatMessages");
+
+
+const nouveau =
+document.createElement("div");
+
+
+nouveau.className =
+"chat-message";
+
+
+nouveau.textContent =
+"Vous : " + message;
+
+
+messages.appendChild(nouveau);
+
+
+input.value = "";
+
+
+messages.scrollTop =
+messages.scrollHeight;
+
+
+setTimeout(function() {
+
+const reponse =
+document.createElement("div");
+
+
+reponse.className =
+"chat-message";
+
+
+reponse.textContent =
+"Merci pour votre message 😊 Cliquez sur WhatsApp pour nous contacter directement.";
+
+
+messages.appendChild(reponse);
+
+
+messages.scrollTop =
+messages.scrollHeight;
+
+},500);
+
+}
+
+
+/* DÉMARRAGE */
+
+render();
+
+updateCart();
 
 </script>
 

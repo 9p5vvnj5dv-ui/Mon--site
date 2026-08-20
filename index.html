@@ -649,32 +649,63 @@ cat === "all"
 : "Produits Women";
 
 
-render();
+render()
 
 }
 
 
 /* AFFICHER PRODUITS */
 
-function render() {
+function render() 
 
-const q =
-document
-.getElementById("search")
-.value
-.toLowerCase()
-.trim();
+  const q = document
+    .getElementById("search")
+    .value
+    .toLowerCase()
+    .trim();
 
+  const list = products.filter(function(p) {
+    return (
+      (category === "all" || p.cat === category) &&
+      p.name.toLowerCase().includes(q)
+    );
+  });
 
-const list =
-products.filter(function(p) {
+  document.getElementById("products").innerHTML = list.length
+    ? list.map(function(p) {
 
-return
-(category === "all" || p.cat === category)
-&&
-p.name.toLowerCase().includes(q);
+        return `
+          <article class="card">
 
-});
+            <img
+              src="${p.img}"
+              alt="${p.name}"
+            >
+
+            <div class="info">
+
+              <div class="name">
+                ${p.name}
+              </div>
+
+              <div class="price">
+                ${p.price.toLocaleString("fr-FR")} G
+              </div>
+
+              <button
+                class="buy"
+                onclick="addToCart(${p.id})">
+                Ajouter au panier
+              </button>
+
+            </div>
+
+          </article>
+        `;
+
+      }).join("")
+    : '<div class="empty">Aucun produit trouvé.</div>';
+}
 
 
 document.getElementById("products").innerHTML =
@@ -687,6 +718,7 @@ list.map(function(p) {
 return `
 
 <article class="card">
+
 
 <img
 src="${p.img}"

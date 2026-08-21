@@ -671,38 +671,7 @@ function render()
        });
 
 
-        return `
-          <article class="card">
-
-            <img
-              src="${p.img}"
-              alt="${p.name}"
-            >
-
-            <div class="info">
-
-              <div class="name">
-                ${p.name}
-              </div>
-
-              <div class="price">
-                ${p.price.toLocaleString("fr-FR")} G
-              </div>
-
-              <button
-                class="buy"
-                onclick="addToCart(${p.id})">
-                Ajouter au panier
-              </button>
-
-            </div>
-
-          </article>
-        `;
-
-      }).join("")
-    : '<div class="empty">Aucun produit trouvé.</div>';
-}
+    
 
 
 document.getElementById("products").innerHTML =
